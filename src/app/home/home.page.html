@@ -1,0 +1,57 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <strong>Ready to create an app?</strong>
+    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  </div>
+</ion-content> -->
+
+<ion-content>
+  <div class="header">
+    <img title="logo" src="assets/logo_manual.png" />
+    <!-- <ion-toolbar>
+    <ion-title>Próximo Turno</ion-title>
+  </ion-toolbar> -->
+    <p>Escolha seu jogo e tire todas suas dúvidas!</p>
+  </div>
+  <ion-searchbar
+    [(ngModel)]="searchTerm"
+    (ionChange)="search()"
+    placeholder="Buscar jogos..."
+    animated
+  >
+  </ion-searchbar>
+
+  <div class="container">
+    @for (game of games; track game; let index = $index) {
+    <div class="card-container" (click)="openChat(game.id)">
+      <ion-card class="game-card">
+        <img alt="Game Image" [src]="game.imageUrl" />
+        <ion-card-header>
+          <ion-card-title>{{ game.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          {{ game.description != null?game.description:game.title }}
+        </ion-card-content>
+      </ion-card>
+    </div>
+    }
+  </div>
+  <div class="footer">
+    <span>Um serviço da Próximo Turno®</span>
+    <img alt="Logo Próximo Turno" src="assets/logo_proximo_turno.png" />
+  </div>
+</ion-content>

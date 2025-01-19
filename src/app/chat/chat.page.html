@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="Voltar"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Chat de Ajuda {{game?" - "+game.title:""}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div
+    class="loading-rules"
+    [class]="this.messages.gameRulesCacheName?'invisible':''"
+  >
+    <div>
+      <ion-spinner name="crescent" color="dark"></ion-spinner>
+      <p>Carregando manual de regras...</p>
+    </div>
+  </div>
+
+  <div class="chat-container">
+    <div
+      class="message"
+      *ngFor="let message of messages.messages"
+      [class]="{'user-message': message.role === 'user',
+                    'ai-message': message.role !== 'user'}"
+    >
+      <div [innerHTML]="convertToHtml(message.parts[0].text)"></div>
+    </div>
+    <div *ngIf="thinking" class="typing-indicator">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer [class]="!this.messages.gameRulesCacheName?'invisible':''">
+  <ion-toolbar>
+    <ion-item>
+      <ion-input
+        #messageInput
+        placeholder="Digite sua dúvida..."
+        (keyup.enter)="sendMessage(messageInput.value)"
+      >
+      </ion-input>
+      <ion-button size="large" slot="end" (click)="sendMessage(messageInput.value)" >
+        <ion-icon slot="icon-only" name="send"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+
+</ion-footer>
+ <span class="disclaimer">Todas as mensagens são geradas por inteligência artificial e podem estar incorretas. Na dúvida, consulte o manual oficial do jogo.</span>
