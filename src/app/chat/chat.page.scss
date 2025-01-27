@@ -46,10 +46,6 @@
   color: black;
 }
 
-.invisible {
-  display: none;
-}
-
 .visible {
   display: block;
 }
@@ -96,14 +92,14 @@
 
 @media (prefers-color-scheme: dark) {
   ion-button {
-      --background: #fff;
-    }
+    --background: #fff;
+  }
 }
 
 @media (prefers-color-scheme: light) {
   ion-button {
-      --background: #000;
-    }
+    --background: #000;
+  }
 }
 
 .disclaimer {
@@ -112,5 +108,3 @@
   text-align: center;
   padding: 8px;
 }
-
-
