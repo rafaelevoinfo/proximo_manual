@@ -4,3 +4,4 @@ This is a web application that answers questions about the rules of selected boa
 # Improvements
 
 - Error management
+- Loading indicator

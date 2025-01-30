@@ -81,6 +81,7 @@ export class ChatPage implements OnInit {
         parts: [{ text: newMessage }],
         role: 'user',
       });
+      this.scrollToBottom();
       this.chatService.sendMessage(this.messages).subscribe((response) => {
         this.thinking = false;
         this.messages.messages.push({

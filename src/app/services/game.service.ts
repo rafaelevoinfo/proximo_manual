@@ -31,8 +31,8 @@ export class GameService extends BaseService {
     });
   }
 
-  searchGames(gameId: string): Observable<BoardGame[]> {
-    return this.http.get<BoardGame[]>(`${this.baseApiUrl}/api/list-games?gameId=${gameId}`, {
+  searchGames(gameTitle: string): Observable<BoardGame[]> {
+    return this.http.get<BoardGame[]>(`${this.baseApiUrl}/api/list-games?gameTitle=${gameTitle}`, {
       headers: this.getCustomHeaders(),
     });
   }
