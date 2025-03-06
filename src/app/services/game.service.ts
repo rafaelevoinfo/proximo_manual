@@ -26,20 +26,14 @@ export class GameService extends BaseService {
   }
 
   getAllGames(pageNumber: number): Observable<BoardGame[]> {
-    return this.http.get<BoardGame[]>(`${this.baseApiUrl}/api/list-games?page=${pageNumber}`, {
-      headers: this.getCustomHeaders(),
-    });
+    return this.http.get<BoardGame[]>(`${this.baseApiUrl}/list-games?page=${pageNumber}`);
   }
 
   searchGames(gameTitle: string): Observable<BoardGame[]> {
-    return this.http.get<BoardGame[]>(`${this.baseApiUrl}/api/list-games?gameTitle=${gameTitle}`, {
-      headers: this.getCustomHeaders(),
-    });
+    return this.http.get<BoardGame[]>(`${this.baseApiUrl}/list-games?gameTitle=${gameTitle}`);
   }
 
   getGameCount(): Observable<GameCount> {
-    return this.http.get<GameCount>(`${this.baseApiUrl}/api/count-games`, {
-      headers: this.getCustomHeaders(),
-    });
+    return this.http.get<GameCount>(`${this.baseApiUrl}/count-games`);
   }
 }

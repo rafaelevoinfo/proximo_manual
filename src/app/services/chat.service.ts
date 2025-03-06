@@ -34,18 +34,14 @@ export class ChatService extends BaseService {
   }
 
   startChat(gameId: string): Observable<string> {
-    return this.http.post<string>(
-      `${this.baseApiUrl}/api/start-chat/${gameId}`,
-      null,
-      {
-        headers: this.getCustomHeaders(),
-      }
-    );
+    return this.http.post<string>(`${this.baseApiUrl}/start-chat/${gameId}`, null);
   }
 
   sendMessage(message: MessagesDTO): Observable<any> {
-    return this.http.post(`${this.baseApiUrl}/api/chat`, message, {
-      headers: this.getCustomHeaders(),
+    return this.http.post(`${this.baseApiUrl}/chat`, message, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
     });
   }
 }

@@ -5,3 +5,4 @@ This is a web application that answers questions about the rules of selected boa
 
 - Error management
 - Loading indicator
+- Get a response from the AI using chunks, instead of waiting for the full response

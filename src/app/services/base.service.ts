@@ -4,11 +4,8 @@ import { environment } from "src/environments/environment";
 export class BaseService {
   protected baseApiUrl = environment.baseApiUrl;
 
-  constructor(protected http: HttpClient) {}
+  constructor(protected http: HttpClient) {
 
-  protected getCustomHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      'x-functions-key': environment.azureKey,
-    });
   }
+
 }
