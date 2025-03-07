@@ -3,11 +3,15 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home" text="Voltar"></ion-back-button>
     </ion-buttons>
-    <ion-title>Chat de Ajuda {{game?" - "+game.title:""}}</ion-title>
+    <ion-title>Chat de Ajuda {{game ? " - "+game.title:""}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+   <app-error-message
+    *ngIf="errorMessage"
+    [errorMessage]="errorMessage" />
+
   <div
     class="loading-rules"
     [class]="this.messages.gameRulesCacheName?'invisible':''"

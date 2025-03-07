@@ -3,9 +3,22 @@
     <img title="logo" src="assets/logo_manual.png" />
     <p>Escolha seu jogo e tire todas suas dúvidas!</p>
   </div>
-  <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="search()" placeholder="Buscar jogos..." animated>
+  <ion-searchbar
+    [(ngModel)]="searchTerm"
+    (ionChange)="search()"
+    placeholder="Buscar jogos..."
+    animated
+  >
   </ion-searchbar>
-  <div class="container">
+
+  <app-error-message *ngIf="errorMessage" [errorMessage]="errorMessage" />
+
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="circular"></ion-spinner>
+    <p>Carregando jogos...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="container">
     @for (game of games; track game; let index = $index) {
     <div class="card-container" (click)="openChat(game.id)">
       <ion-card class="game-card">
@@ -22,12 +35,12 @@
   </div>
 
   <app-pagination
-        [currentPage]="paginationInfo.currentPage"
-        [pageSize]="paginationInfo.pageSize"
-        [totalItems]="paginationInfo.totalItems"
-        (pageChange)="onPageChange($event)">
-      </app-pagination>
-
+    [currentPage]="paginationInfo.currentPage"
+    [pageSize]="paginationInfo.pageSize"
+    [totalItems]="paginationInfo.totalItems"
+    (pageChange)="onPageChange($event)"
+  >
+  </app-pagination>
 
   <div class="footer">
     <span>Um serviço da Próximo Turno®</span>

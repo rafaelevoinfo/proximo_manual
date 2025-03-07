@@ -48,6 +48,7 @@
 .game-card {
   width: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
   /* Add shadow to the border */
 }
 
@@ -95,3 +96,25 @@
   margin: 10px 0;
   text-align: center;
 }
+
+
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+
+  p {
+    margin-top: 10px;
+    color: #666;
+  }
+
+  ion-spinner {
+    --color: #007bff;
+    transform: scale(1.5);
+  }
+}
+
+

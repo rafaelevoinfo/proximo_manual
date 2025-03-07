@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PaginationComponent } from '../components/pagination.component';
+import { ErrorComponent } from '../components/error.component';
 
-import { IonContent, IonSearchbar } from '@ionic/angular/standalone';
+import {
+  IonContent,
+  IonSearchbar,
+  IonSpinner
+} from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -34,6 +39,8 @@ export class PaginationInfo {
     CommonModule,
     FormsModule,
     PaginationComponent,
+    IonSpinner,
+    ErrorComponent
   ],
 })
 export class HomePage implements OnInit {
@@ -41,6 +48,7 @@ export class HomePage implements OnInit {
   searchTerm: string = '';
   paginationInfo: PaginationInfo = new PaginationInfo();
   errorMessage: string = '';
+  isLoading: boolean = true;
 
   constructor(private gameService: GameService, private router: Router) {}
 
@@ -49,19 +57,33 @@ export class HomePage implements OnInit {
   }
 
   loadGames() {
-    this.gameService.getGameCount().subscribe((gameInfos) => {
-      this.paginationInfo.totalPages = gameInfos.pages;
-      this.paginationInfo.totalItems = gameInfos.total;
-      this.paginationInfo.pageSize = gameInfos.itemsPerPage;
-      this.paginationInfo.currentPage = 1;
+    this.isLoading = true;
+    this.gameService.getGameCount().subscribe({
+      next: (gameInfos) => {
+        this.paginationInfo.totalPages = gameInfos.pages;
+        this.paginationInfo.totalItems = gameInfos.total;
+        this.paginationInfo.pageSize = gameInfos.itemsPerPage;
+        this.paginationInfo.currentPage = 1;
+        this.loadPage();
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = 'Erro ao carregar os jogos';
+      },
     });
-
-    this.loadPage();
   }
 
   loadPage() {
-    this.gameService.getAllGames(this.paginationInfo.currentPage).subscribe((games) => {
-      this.games = games;
+    this.isLoading = true;
+    this.gameService.getAllGames(this.paginationInfo.currentPage).subscribe({
+      next: (games) => {
+        this.games = games;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = 'Erro ao carregar os jogos';
+      },
     });
   }
 

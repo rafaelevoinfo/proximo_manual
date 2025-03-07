@@ -20,17 +20,24 @@ export interface GameCount {
   providedIn: 'root',
 })
 export class GameService extends BaseService {
-
   constructor(http: HttpClient) {
     super(http);
   }
 
   getAllGames(pageNumber: number): Observable<BoardGame[]> {
-    return this.http.get<BoardGame[]>(`${this.baseApiUrl}/list-games?page=${pageNumber}`);
+    return this.http.get<BoardGame[]>(
+      `${this.baseApiUrl}/list-games?page=${pageNumber}`
+    );
   }
 
   searchGames(gameTitle: string): Observable<BoardGame[]> {
-    return this.http.get<BoardGame[]>(`${this.baseApiUrl}/list-games?gameTitle=${gameTitle}`);
+    return this.http.get<BoardGame[]>(
+      `${this.baseApiUrl}/list-games?gameTitle=${gameTitle}`
+    );
+  }
+
+  getGame(gameId: string): Observable<BoardGame> {
+    return this.http.get<BoardGame>(`${this.baseApiUrl}/get-game/${gameId}`);
   }
 
   getGameCount(): Observable<GameCount> {

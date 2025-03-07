@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { marked } from 'marked';
+import { ErrorComponent } from '../components/error.component';
 
 import {
   IonContent,
@@ -13,11 +14,14 @@ import {
   IonFooter,
   IonItem,
   IonIcon,
-  IonInput, IonSpinner } from '@ionic/angular/standalone';
+  IonInput,
+  IonSpinner,
+} from '@ionic/angular/standalone';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatService, MessagesDTO } from '../services/chat.service';
 import { BoardGame, GameService } from '../services/game.service';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -38,15 +42,17 @@ import { BoardGame, GameService } from '../services/game.service';
     IonBackButton,
     IonFooter,
     IonItem,
-    IonIcon
+    IonIcon,
+    ErrorComponent,
   ],
 })
 export class ChatPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
   @ViewChild(IonInput) messageInput: IonInput;
   messages: MessagesDTO;
-  game: BoardGame;
+  game:BoardGame;
   thinking: boolean;
+  errorMessage: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -56,21 +62,36 @@ export class ChatPage implements OnInit {
 
   ngOnInit() {
     var gameId = this.route.snapshot.paramMap.get('id');
-    this.startChat(gameId ?? '');
+    this.loadGame(gameId ?? '');
   }
 
-  startChat(gameId: string) {
+  loadGame(gameId: string) {
     this.messages = {
       gameId: gameId,
       messages: [],
       filesData: [],
       gameRulesCacheName: '',
     };
-    this.chatService.startChat(gameId).subscribe((cacheName) => {
-      this.messages.gameRulesCacheName = cacheName;
+
+    this.gameService.getGame(gameId).subscribe({
+      next: (game) => {
+        this.game = game;
+        this.startChat(gameId);
+      },
+      error: (error) => {
+        this.errorMessage = 'Não foi possível encontrar o jogo';
+      },
     });
-    this.gameService.searchGames(gameId).subscribe((game) => {
-      this.game = game[0];
+  }
+
+  startChat(gameId: string) {
+    this.chatService.startChat(gameId).subscribe({
+      next: (cacheName) => {
+        this.messages.gameRulesCacheName = cacheName;
+      },
+      error: (error) => {
+        this.errorMessage = 'Não foi possível iniciar o chat.';
+      },
     });
   }
 
@@ -82,13 +103,19 @@ export class ChatPage implements OnInit {
         role: 'user',
       });
       this.scrollToBottom();
-      this.chatService.sendMessage(this.messages).subscribe((response) => {
-        this.thinking = false;
-        this.messages.messages.push({
-          role: 'model',
-          parts: [{ text: response }],
-        });
-        this.scrollToBottom();
+      this.chatService.sendMessage(this.messages).subscribe({
+        next: (response) => {
+          this.thinking = false;
+          this.messages.messages.push({
+            role: 'model',
+            parts: [{ text: response }],
+          });
+          this.scrollToBottom();
+        },
+        error: (error) => {
+          this.thinking = false;
+          this.errorMessage = 'Erro ao comunicar com a I.A.';
+        },
       });
     }
     this.messageInput.value = '';
@@ -104,5 +131,3 @@ export class ChatPage implements OnInit {
     }, 100);
   }
 }
-
-
